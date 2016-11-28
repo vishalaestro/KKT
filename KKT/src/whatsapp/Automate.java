@@ -111,6 +111,7 @@ public class Automate {
 							Duration dur = Duration.between(Global.start, end);// check whether the specified time interval is over by comparing with the startTime
 							Integer timeInterval=Integer.parseInt(prop.getProperty("Interval"));
 							Integer elapsedMinutes=(int) dur.toMinutes();
+							Global.log.info("elapsedMinutes : "+elapsedMinutes);
 								if(elapsedMinutes>timeInterval){ // The automation process is ended if the set time is reached .
 									break;
 								}
