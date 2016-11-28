@@ -1,7 +1,7 @@
 package whatsapp;
 
 
-public class InitiateAutomation {
+public class Main {
 	public static void main(String args[]){
 	try{
 		Automate automate=new Automate();

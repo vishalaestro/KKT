@@ -84,7 +84,7 @@ public class Automate {
 					Thread.sleep(2000);
 					if(list!=null && !list.isEmpty()){ //check whether there is any contact to be added else stop the automation process and start updating the master excel with the available contacts in HashSet
 						WebElement child=list.get(0);
-						String name=child.getText();
+						String name=child.getText().trim();
 						if((name!=null) && (!name.isEmpty())){
 							if( (Global.patternMatcher(name)) && (Global.checkRegionalLanguages(name)) ){
 								String parsedContact=Global.replaceString(name).trim();
