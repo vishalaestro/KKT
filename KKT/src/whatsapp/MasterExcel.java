@@ -56,9 +56,11 @@ public class MasterExcel {
 					Global.excelLog.info("Contacts to be removed as duplicates :"+notNeededContacts);
 					System.out.println("Completed removing duplicates from Master sheet");
 					Global.excelLog.info("Total no of contacts to be updated :"+Global.contacts.size());
-					Global.excelLog.info("contacts to be inserted in Excel :"+Global.contacts);
 					System.out.println("Total no of contacts to be updated :"+Global.contacts.size());
 					updateExcelFile(lastRowNum+1,firstSheet,existingWorkBook,Global.homePath+File.separator+"Contacts"+File.separator+"master.xlsx");
+			}
+			else{
+				Global.exception.error("Master file not found under contacts folder");
 			}
 		
 		}
@@ -83,6 +85,7 @@ public class MasterExcel {
 				Row row = sheet.createRow(rowNumber+i);//specifies the row number , initially the row number will be the next row of the last row of the existing master excel
 				Cell cell = row.createCell(20);//specifies the cell position on where the contact should be inserted for a particular row , cell 20 is the cell where contacts are entered .
 				cell.setCellValue(contact);
+				Global.excelLog.info("contact to be inserted in Excel :"+contact);
 				i++;
 			}
 			FileOutputStream out = new FileOutputStream(new File(excelFileName));

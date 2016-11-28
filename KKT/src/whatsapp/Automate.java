@@ -75,7 +75,6 @@ public class Automate {
 	 */
 	void maniplateDOMElments(WebDriver driver) throws Exception{
 		try{
-				Global.log.info("set duration of the process in minutes : "+Integer.parseInt(new Properties().getProperty("Interval")));
 				while(true){
 					Properties prop = new Properties();
 					InputStream input = null;
