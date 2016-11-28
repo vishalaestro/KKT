@@ -41,18 +41,22 @@ public class MasterExcel {
 					 if(firstSheet.getRow(i)!=null){
 						 Cell cell = firstSheet.getRow(i).getCell(20);//represents the cell where the phone number exists
 						 if(cell!=null){
-							 masterContacts.add(Global.formatter.formatCellValue(cell));
+							 String cellValue=Global.formatter.formatCellValue(cell).trim();
+							 if(cellValue!=null && !cellValue.isEmpty()){
+								 masterContacts.add(cellValue);
+							 }
 						 }
 					 }
 				 }
 				 Global.excelLog.info("Contacts in master Sheet :"+notNeededContacts);
 					for(String duplicate:Global.contacts){
-						String removeString=duplicate.trim();
-						if(masterContacts.contains(removeString)){
-							notNeededContacts.add(removeString);
+						if(masterContacts.contains(duplicate.trim())){
+							notNeededContacts.add(duplicate.trim());
 						}
 					}
 					Global.contacts.removeAll(notNeededContacts);
+					Global.contacts.remove(null);
+					
 					Global.excelLog.info("Contacts to be removed as duplicates :"+notNeededContacts);
 					System.out.println("Completed removing duplicates from Master sheet");
 					Global.excelLog.info("Total no of contacts to be updated :"+Global.contacts.size());

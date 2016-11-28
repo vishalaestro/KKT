@@ -86,10 +86,12 @@ public class Automate {
 						WebElement child=list.get(0);
 						String name=child.getText();
 						if((name!=null) && (!name.isEmpty())){
-							if( (Global.patternMatcher(name)) && (!Global.checkRegionalLanguages(name)) ){
-								String parsedContact=Global.replaceString(name);
-								Global.log.info("parsedContact :"+parsedContact);
-								Global.contacts.add(parsedContact);
+							if( (Global.patternMatcher(name)) && (Global.checkRegionalLanguages(name)) ){
+								String parsedContact=Global.replaceString(name).trim();
+								if(parsedContact!=null && !parsedContact.isEmpty()){
+									Global.log.info("parsedContact :"+parsedContact);
+									Global.contacts.add(parsedContact);
+								}
 							}
 							Actions action= new Actions(driver);
 							action.contextClick(child).build().perform();//right click the contact to be deleted
