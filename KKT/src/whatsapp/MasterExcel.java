@@ -43,19 +43,17 @@ public class MasterExcel {
 						 if(cell!=null){
 							 String cellValue=Global.formatter.formatCellValue(cell).trim();
 							 if(cellValue!=null && !cellValue.isEmpty()){
-								 masterContacts.add(cellValue);
+								 masterContacts.add(cellValue.trim());
 							 }
 						 }
 					 }
 				 }
-				 Global.excelLog.info("Contacts in master Sheet :"+notNeededContacts);
 					for(String duplicate:Global.contacts){
-						if(masterContacts.contains(duplicate.trim())){
-							notNeededContacts.add(duplicate.trim());
+						if(masterContacts.contains(duplicate)){
+							notNeededContacts.add(duplicate);
 						}
 					}
 					Global.contacts.removeAll(notNeededContacts);
-					Global.contacts.remove(null);
 					
 					Global.excelLog.info("Contacts to be removed as duplicates :"+notNeededContacts);
 					System.out.println("Completed removing duplicates from Master sheet");

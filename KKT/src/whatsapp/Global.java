@@ -35,14 +35,14 @@ public class Global {
 			for (char c: element.toCharArray()) {
 			     if ((Character.UnicodeBlock.of(c) == Character.UnicodeBlock.DEVANAGARI) || (Character.UnicodeBlock.of(c) == Character.UnicodeBlock.TAMIL) 
 			    		 || (Character.UnicodeBlock.of(c) == Character.UnicodeBlock.TELUGU)) {
-			    	 return true;
+			    	 return false;
 			     }
 			 }
 		}
 		catch(Exception e){
 			Global.exception.error("Exception in checkRegionalLanguages", e);
 		}
-		return false;
+		return true;
 	}
 	
 	/**
