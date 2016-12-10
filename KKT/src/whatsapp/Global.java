@@ -18,6 +18,7 @@ public class Global {
 	static Logger exception= Logger.getLogger("exception");
 	static Logger log= Logger.getLogger("log");
 	static Logger excelLog= Logger.getLogger("excelLog");
+	static Logger emerygencyContacts= Logger.getLogger("emerygencyContacts");
 	static String homePath = System.getProperty("homePath");
 	static HashSet<String> contacts=new HashSet<String>();  
 	static DataFormatter formatter = new DataFormatter();
@@ -72,8 +73,8 @@ public class Global {
 	 */
 	static String replaceString(String contact){
 		try{
-			String parsedString=contact.replace("(", "").replace(")", "").trim();
-			return parsedString;
+			String parsedString=contact.replace("(", "").replace(")", "");
+			return parsedString.trim();
 		}
 		catch(Exception e){
 			Global.exception.error("Exception in replaceString", e);

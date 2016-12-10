@@ -87,9 +87,10 @@ public class Automate {
 						String name=child.getText();
 						if((name!=null) && (!name.isEmpty())){
 							if( (Global.patternMatcher(name)) && (Global.checkRegionalLanguages(name)) ){
-								String parsedContact=Global.replaceString(name).trim();
+								String parsedContact=Global.replaceString(name);
 								if(parsedContact!=null && !parsedContact.isEmpty()){
-									Global.log.info("parsedContact :"+parsedContact);
+									Global.log.info("starting a new session at : "+new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a").format(new Date()));
+									Global.emerygencyContacts.info(parsedContact);
 									Global.contacts.add(parsedContact);
 								}
 							}
@@ -128,6 +129,7 @@ public class Automate {
 			}
 			catch(Exception e){
 				maniplateDOMElments(driver);
+				Global.exception.error("exception in maniplateDOMElments : ", e);
 			}
 			
 		}
