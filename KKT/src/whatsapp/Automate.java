@@ -10,8 +10,10 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Scanner;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -25,6 +27,9 @@ import org.openqa.selenium.interactions.Actions;
  */
 public class Automate {
 	
+ 
+	private Instant start = Instant.now();
+	private Scanner user_input = new Scanner( System.in );
 	
 	/**
 	 * open the specified URL
@@ -51,7 +56,7 @@ public class Automate {
 	private void getContacts(WebDriver driver) throws Exception{
 		try{
 			System.out.println("opening Browser,scan the QR code and wait for the messages to display then enter continue for further operation ");
-			String key = Global.user_input.next( );
+			String key = user_input.next( );
   			if(key.trim().equalsIgnoreCase("continue")){
   				Global.log.info("starting a new session at : "+new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a").format(new Date()));
   				maniplateDOMElments(driver);
@@ -85,15 +90,8 @@ public class Automate {
 					if(list!=null && !list.isEmpty()){ //check whether there is any contact to be added else stop the automation process and start updating the master excel with the available contacts in HashSet
 						WebElement child=list.get(0);
 						String name=child.getText();
-						if((name!=null) && (!name.isEmpty())){
-							if( (Global.patternMatcher(name)) && (Global.checkRegionalLanguages(name)) ){
-								String parsedContact=Global.replaceString(name);
-								if(parsedContact!=null && !parsedContact.isEmpty()){
-									Global.log.info("starting a new session at : "+new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a").format(new Date()));
-									Global.emerygencyContacts.info(parsedContact);
-									Global.contacts.add(parsedContact);
-								}
-							}
+							Global.rawContacts.add(name);
+							Global.emerygencyContacts.info(name);
 							Actions action= new Actions(driver);
 							action.contextClick(child).build().perform();//right click the contact to be deleted
 							Thread.sleep(2000);
@@ -103,33 +101,36 @@ public class Automate {
 							else{
 								driver.findElement(By.xpath("//*[@id=\"app\"]/div/span[4]/div/ul/li[3]/a")).click();//click exit group button if its a group 
 							}
-					
-							Thread.sleep(2000);
-							driver.findElement(By.xpath("//*[@id=\"app\"]/div/span[3]/div/div/div/div[2]/button[2]")).click();// click the confirm button
-							Thread.sleep(4000);
+							Thread.sleep(5000);
+							WebElement delete=driver.findElement(By.cssSelector(".popup-container > .popup > .popup-controls > .btn-default"));
+							delete.click();
+							
+							Thread.sleep(Integer.parseInt(prop.getProperty("DeleteTime")));
 							
 							Instant end = Instant.now();
-							Duration dur = Duration.between(Global.start, end);// check whether the specified time interval is over by comparing with the startTime
+							Duration dur = Duration.between(start, end);// check whether the specified time interval is over by comparing with the startTime
 							Integer timeInterval=Integer.parseInt(prop.getProperty("Interval"));
 							Integer elapsedMinutes=(int) dur.toMinutes();
 							Global.log.info("elapsedMinutes : "+elapsedMinutes);
-								if(elapsedMinutes>timeInterval){ // The automation process is ended if the set time is reached .
+							System.out.println("elapsedMinutes : "+elapsedMinutes);
+								if(elapsedMinutes>timeInterval){
+									user_input.close(); // The automation process is ended if the set time is reached .
 									break;
 								}
-							}
 							
 						}
 						else{
+							user_input.close();
 							break;
 						}
 					
 					}
-				
+			
 				new MasterExcel().processMasterExcel();
 			}
 			catch(Exception e){
-				maniplateDOMElments(driver);
 				Global.exception.error("exception in maniplateDOMElments : ", e);
+				maniplateDOMElments(driver);
 			}
 			
 		}
